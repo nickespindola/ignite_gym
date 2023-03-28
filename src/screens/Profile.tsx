@@ -1,19 +1,56 @@
 import React, { useState } from 'react'
-import { Center, ScrollView, VStack, Skeleton, Text, Heading } from 'native-base'
+import { Center, ScrollView, VStack, Skeleton, Text, Heading, useToast } from 'native-base'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { UserPhoto } from '@components/UserPhoto'
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
 
 const PHOTO_SIZE = 33;
 
 export function Profile() {
   const [photoIsLoading, setPhotoIsLoading] = useState(false)
+  const [userPhoto, setUserPhoto] = useState('https://github.com/nickespindola.png')
 
-  async function handleUserPhotoSelect(){
-    await ImagePicker.launchImageLibraryAsync()
+  const toast = useToast()
+
+  async function handleUserPhotoSelect() {
+    setPhotoIsLoading(true)
+
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true
+      })
+
+      if (photoSelected.canceled) {
+        return;
+      }
+
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+
+        if (photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
+          return toast.show({
+            title: "Por favor, escolha uma imagem menor do que 5MB.",
+            placement: "top",
+            bgColor: "red.500"
+          })
+        }
+
+        setUserPhoto(photoSelected.assets[0].uri)
+      }
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPhotoIsLoading(false)
+    }
+
   }
 
   return (
@@ -32,7 +69,7 @@ export function Profile() {
               />
               :
               <UserPhoto
-                source={{ uri: "https://github.com/nickespindola.png" }}
+                source={{ uri: userPhoto }}
                 alt="Imagem do usuário"
                 size={PHOTO_SIZE}
               />
@@ -58,7 +95,7 @@ export function Profile() {
         </Center>
 
         <VStack px={10} mt={10} mb={9}>
-          <Heading color={"gray.200"} fontSize="md" mb={2}> 
+          <Heading color={"gray.200"} fontSize="md" mb={2}>
             Alterar senha
           </Heading>
 
