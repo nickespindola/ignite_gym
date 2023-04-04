@@ -24,7 +24,7 @@ export function HomeHeader() {
 
       <VStack flex={1}>
         <Text color="gray.100" fontSize={"md"}>Olá,</Text>
-        <Heading color="gray.100" fontSize={"md"}>Nicolas</Heading>
+        <Heading color="gray.100" fontSize={"md"} fontFamily={"heading"}>Nicolas</Heading>
       </VStack>
 
       <TouchableOpacity>
