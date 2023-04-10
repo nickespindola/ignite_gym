@@ -32,7 +32,7 @@ export function Profile() {
       }
 
       if (photoSelected.assets[0].uri) {
-        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri)
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri) as Record<string, any>
 
         if (photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
           return toast.show({
