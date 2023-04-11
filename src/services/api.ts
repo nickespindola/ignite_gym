@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3333/'
+  baseURL: 'http://172.31.224.1:3333/'
 })
 
 // api.interceptors.request.use((config) => {    
@@ -14,8 +14,8 @@ const api = axios.create({
 
 api.interceptors.response.use((response) => {
   console.log('teste');
-  
-  
+
+
   return response
 }, (error) => {
   console.log('INTERCEPTOR RESPONSE:', error)
