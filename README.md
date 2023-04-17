@@ -1,4 +1,7 @@
 # Ignite Gym
+![image](https://user-images.githubusercontent.com/92181835/232500026-82d439ba-a124-469e-bfe8-e6bba681d081.png)
+
+
 Gym App is a mobile application built with React Native that allows users to track and monitor their workouts. 
 The app includes a login screen, a home page showing the workouts, a page with the workouts history and a profile page where users can check their personal information. This project was completed as part of the RocketSeat Ignite course.
 
