@@ -46,17 +46,19 @@ export function SignIn() {
     try {
       setIsLoading(true)
       await signIn(email, password)
+
     } catch (error) {
       const isAppError = error instanceof AppError
-
       const title = isAppError ? error.message : 'Não foi possível entrar. Tente novamente mais tarde.'
+
+      setIsLoading(false)
+
       toast.show({
         title,
         placement: 'top',
         bgColor: 'red.500'
       })
 
-      setIsLoading(false)
     }
   }
 
@@ -117,6 +119,7 @@ export function SignIn() {
         <Button
           title="Acessar"
           onPress={handleSubmit(handleSignIn)}
+          isLoading={isLoading}
         />
 
         <Center mt={24}>
